@@ -7,12 +7,8 @@ import { Adress } from "./entities/Adress";
 const DB_PORT = process.env.DB_PORT as number | undefined;
 
 export const AppDataSource = new DataSource({
-    type: "mysql",
-    host: process.env.DB_HOST,
-    port: DB_PORT,
-    username: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    database: process.env.DB_NAME,
+    type: "postgres",
+    url:process.env.DB_URL,
     entities: [User, Adress],
     migrations: [`${__dirname}/**/migrations/*.{ts,js}`],
     synchronize: false,
