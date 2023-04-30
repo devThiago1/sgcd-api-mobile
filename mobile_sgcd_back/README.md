@@ -1,1 +1,0 @@
-# SGCD_API_MOBILE

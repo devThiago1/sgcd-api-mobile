@@ -1,1 +1,1 @@
-# sgcd-api-mobile
+# SGCD_API_MOBILE
