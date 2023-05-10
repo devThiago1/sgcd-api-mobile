@@ -50,11 +50,11 @@ export class userLogin {
 
             if(tokenExpiresIn < timeNoW){
                 console.log('VALIDO')
-                return res.status(400);
+                return res.status(400).json({error: 'ERROR'});
             }
             else{
                 console.log('VALIDO')
-                return res.status(200);
+                return res.status(200).json({message: 'SUCESS'});
             }
     }
 }
