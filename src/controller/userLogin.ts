@@ -38,17 +38,13 @@ export class userLogin {
 
     async verfToken(req: Request, res: Response) {
             const jwt =  require('jsonwebtoken')
-        
+        try{
             const { token } = req.body;
-            const tokenDecrypted = jwt.verify(token, process.env.JWT_PASS ?? '', {ignoreExpiration: false} )
-            console.log(tokenDecrypted)
+            const tokenDecrypted = jwt.decode(token);
             
-            const tokenExpiresIn = tokenDecrypted.exp;
-            const timeNoW = Math.floor(Date.now() / 1000);
             
         
-
-            if(tokenExpiresIn < timeNoW){
+            if(tokenDecrypted.exp < Date.now() / 1000){
                 console.log('Invalido')
                 return res.status(400).json({error: 'ERROR'});
             }
@@ -56,5 +52,8 @@ export class userLogin {
                 console.log('VALIDO')
                 return res.status(200).json({message: 'SUCESS'});
             }
+        }catch(error){
+            return res.status(400).json({error:'error server'});
+        }
     }
 }
