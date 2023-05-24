@@ -61,4 +61,59 @@ export class userLogin {
             return res.status(400).json({error:'error server'});
         }
     }
+
+    async updateUser(req: Request, res: Response) {
+        const { id, firstName, lastName, number, cpf, email, password, bairro, rua, complemento, cep, numero  } = req.body;
+
+        try {
+            const userRepository = getRepository(User);
+            const user = await  user_info_Repository.findOneBy({ id_user: id });
+
+            if (!user) {
+                return res.status(400).json({ error: 'Usuário não encontrado' });
+            }
+
+
+            
+            const adressRepository = getRepository(Adress);
+            const adressUser =  await user_adress_Repository.findOneBy({ id: user.id_user });
+        console.log(adressUser)
+
+
+
+        await userRepository
+            .createQueryBuilder()
+            .update(User)
+            .set({
+                first_name_user: firstName,
+                last_name_user: lastName,
+                number_user: number,
+                cpf_user: cpf,
+                email_user: email,
+                password_user: password,
+                
+            })
+            .where("id_user = :id", { id: id })
+            .execute()
+
+            
+            await adressRepository
+            .createQueryBuilder()
+            .update(Adress)
+            .set({
+                bairro_user: bairro,
+                rua_user: rua,
+                complemento_user: complemento,
+                cep_user: cep,
+                number_adress_user: numero,
+                
+            })
+            .where("id: = :user.id_user", { id: id })
+            .execute()
+
+        } catch (error) {
+            console.error(error);
+            return res.status(400).json({ error: 'Erro ao atualizar o usuário' });
+        }
+}
 }
