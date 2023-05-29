@@ -27,8 +27,11 @@ export class PostManager {
     async getPosts(req: Request, res: Response) {
         try {
             const posts = await post_Repository.createQueryBuilder("posts")
-            .leftJoinAndSelect(User, "users", "users.id_user = posts.user")
-            .select(["posts.id", "posts.message", "users.first_name_user", "users.last_name_user"])
+            .leftJoinAndSelect("posts.user", "user")
+            .select(["posts.id",
+            "posts.message",
+            "user.first_name_user",
+            "user.last_name_user",])
             .getMany()
                 if(posts !== null){
                    return res.json({

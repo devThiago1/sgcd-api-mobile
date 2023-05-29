@@ -1,5 +1,6 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm'
 import { Adress } from './Adress';
+import { Posts } from './Post';
 
 @Entity('users')
 export class User{
@@ -16,7 +17,7 @@ export class User{
     @Column("varchar", { length: 30})
     number_user: string;
 
-    @Column("varchar", { length: 20})
+    @Column("varchar", { length: 60})
     cpf_user: string;
 
     @Column({type: "text"})
@@ -28,6 +29,9 @@ export class User{
     @OneToOne(type => Adress)
     @JoinColumn()
     Adress: Adress
+
+    @OneToMany(type => Posts, post => post.user)
+    posts: Posts[];
 }
 
 

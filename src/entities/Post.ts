@@ -4,6 +4,8 @@ import {
     Column,
     OneToOne,
     JoinColumn,
+    OneToMany,
+    ManyToOne,
 } from "typeorm"
 import { User } from "./User";
 
@@ -16,7 +18,7 @@ export class Posts{
     @Column({type: "text"})
     message: string;
 
-    @OneToOne(type => User)
+    @ManyToOne(type => User, user => user.posts)
     @JoinColumn({ name: "user_id"})
     user: User;
     
