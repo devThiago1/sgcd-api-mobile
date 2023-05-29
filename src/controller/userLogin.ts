@@ -3,6 +3,8 @@ import { user_info_Repository } from "../repositories/user_info_Repository";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken'
 import { user_adress_Repository } from "../repositories/user_adress_Repository";
+import { User } from "../entities/User";
+import { Adress } from "../entities/Adress";
 
 export class userLogin {
     async verfUser(req: Request, res: Response) {
@@ -66,7 +68,6 @@ export class userLogin {
         const { id, firstName, lastName, number, cpf, email, password, bairro, rua, complemento, cep, numero  } = req.body;
 
         try {
-            const userRepository = getRepository(User);
             const user = await  user_info_Repository.findOneBy({ id_user: id });
 
             if (!user) {
@@ -75,13 +76,12 @@ export class userLogin {
 
 
             
-            const adressRepository = getRepository(Adress);
             const adressUser =  await user_adress_Repository.findOneBy({ id: user.id_user });
         console.log(adressUser)
 
 
 
-        await userRepository
+        await user_info_Repository
             .createQueryBuilder()
             .update(User)
             .set({
@@ -97,7 +97,7 @@ export class userLogin {
             .execute()
 
             
-            await adressRepository
+            await user_adress_Repository
             .createQueryBuilder()
             .update(Adress)
             .set({
