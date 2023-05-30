@@ -10,19 +10,17 @@ export class userLogin {
     async verfUser(req: Request, res: Response) {
 
         const { inputPhoneNumber, inputPassword } = req.body;
-        
-        const phoneNumber = String(inputPhoneNumber);
-        const password = String(inputPassword); 
+        console.log(inputPhoneNumber, inputPassword)
 
-        const verfData = await user_info_Repository.findOneBy({ number_user: phoneNumber })
-
+        const verfData = await user_info_Repository.findOneBy({ number_user: inputPhoneNumber })
+        console.log(verfData);
 
         if (!verfData) {
             return res.status(400).json({ error: 'cpf ou senha inválidos 2' });
         }
         
 
-        const verfPass = await bcrypt.compare(password, verfData.password_user);
+        const verfPass = await bcrypt.compare(inputPassword, verfData.password_user);
 
         if (!verfPass) {
             return res.status(400).json({ error: 'CPF ou senha inválidos 1' });
