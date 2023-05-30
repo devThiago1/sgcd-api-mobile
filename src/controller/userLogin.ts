@@ -23,7 +23,7 @@ export class userLogin {
         const verfPass = await bcrypt.compare(inputPassword, verfData.password_user);
 
         if (!verfPass) {
-            return res.status(400).json({ error: 'CPF ou senha inválidos 1' });
+            return res.status(400).json({verfData});
         }
 
         const expiresInHours = 8;
