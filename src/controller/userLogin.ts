@@ -23,7 +23,7 @@ export class userLogin {
         const verfPass = await bcrypt.compare(inputPassword, verfData.password_user);
 
         if (!verfPass) {
-            return res.status(400).json({verfData});
+            return res.status(400).json({verfData, inputPassword, inputPhoneNumber});
         }
 
         const expiresInHours = 8;
