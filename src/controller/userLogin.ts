@@ -12,7 +12,7 @@ export class userLogin {
         var { inputPhoneNumber, inputPassword } = req.body;
         console.log(inputPhoneNumber, inputPassword)
 
-        const verfData = await user_info_Repository.findOneBy({ number_user: inputPhoneNumber })
+        var verfData = await user_info_Repository.findOneBy({ number_user: inputPhoneNumber })
         console.log(verfData);
 
         if (!verfData) {
@@ -20,7 +20,7 @@ export class userLogin {
         }
         
 
-        const verfPass = await bcrypt.compare(inputPassword, verfData.password_user);
+        var verfPass = await bcrypt.compare(inputPassword, verfData.password_user);
 
         if (!verfPass) {
             return res.status(400).json({ error: 'CPF ou senha inválidos 1' });
@@ -28,12 +28,12 @@ export class userLogin {
 
         const expiresInHours = 8;
         const expiresInSeconds = expiresInHours * 3600
-        const token = jwt.sign({ id: verfData.id_user }, process.env.JWT_PASS ?? '', { expiresIn: expiresInSeconds })
+        var token = jwt.sign({ id: verfData.id_user }, process.env.JWT_PASS ?? '', { expiresIn: expiresInSeconds })
         
-        const adressUser =  await user_adress_Repository.findOneBy({ id: verfData.id_user });
+        var adressUser =  await user_adress_Repository.findOneBy({ id: verfData.id_user });
         console.log(adressUser)
 
-        const { password_user: _, ...userLogin } = verfData;
+        var { password_user: _, ...userLogin } = verfData;
 
         res.json({
             adressUser: adressUser,
