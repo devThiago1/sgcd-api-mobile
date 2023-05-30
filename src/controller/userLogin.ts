@@ -9,7 +9,7 @@ import { Adress } from "../entities/Adress";
 export class userLogin {
     async verfUser(req: Request, res: Response) {
 
-        const { inputPhoneNumber, inputPassword } = req.body;
+        var { inputPhoneNumber, inputPassword } = req.body;
         console.log(inputPhoneNumber, inputPassword)
 
         const verfData = await user_info_Repository.findOneBy({ number_user: inputPhoneNumber })
@@ -23,7 +23,7 @@ export class userLogin {
         const verfPass = await bcrypt.compare(inputPassword, verfData.password_user);
 
         if (!verfPass) {
-            return res.status(400).json({verfData, inputPassword, inputPhoneNumber});
+            return res.status(400).json({ error: 'CPF ou senha inválidos 1' });
         }
 
         const expiresInHours = 8;
