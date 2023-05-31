@@ -66,7 +66,10 @@ export class userLogin {
     }
 
     async updateUser(req: Request, res: Response) {
-        var { id, firstName, lastName, numero_user, cpf, email, password, bairro, rua, complemento, cep, numero_adress } = req.body;
+        const { id, firstName, lastName, numero_user, cpf, email, password, bairro, rua, complemento, cep, numero_adress } = req.body;
+
+        const firstNameUser = firstName;
+        const lastNameUser = lastName;
 
         try {
             const user = await user_info_Repository.findOneBy({ id_user: id });
@@ -78,29 +81,35 @@ export class userLogin {
             const adressUser = await user_adress_Repository.findOneBy({ id: user.id_user });
             console.log(adressUser)
 
-            const updateAdressQuery = `
-            UPDATE adress
-            SET bairro_user = $1,
-                rua_user = $2,
-                complemento_user = $3,
-                cep_user = $4,
-                number_adress_user = $5
-            WHERE id = $6
-        `;
-            await user_adress_Repository.query(updateAdressQuery, [bairro, rua, complemento, cep, numero_adress, user.id_user]);
 
 
-            const updateUserQuery = `
-            UPDATE users
-            SET first_name_user = $1,
-                last_name_user = $2,
-                number_user = $3,
-                cpf_user = $4,
-                email_user = $5,
-                password_user = $6
-            WHERE id_user = $7
-        `;
-        await user_info_Repository.query(updateUserQuery, [firstName, lastName, numero_user, cpf, email, password, id]);
+            await user_info_Repository
+                .createQueryBuilder()
+                .update(User)
+                .set({
+                    first_name_user: firstName,
+                    last_name_user: lastName,
+                    number_user: numero_user,
+                    cpf_user: cpf,
+                    email_user: email,
+                    password_user: password,
+                })
+                .where("id_user = :id", { id: id })
+                .execute()
+
+
+            await user_adress_Repository
+                .createQueryBuilder()
+                .update(Adress)
+                .set({
+                    bairro_user: bairro,
+                    rua_user: rua,
+                    complemento_user: complemento,
+                    cep_user: cep,
+                    number_adress_user: numero_adress,
+                })
+                .where("id = :user.id_user", { id_user: id })
+                .execute()
 
         } catch (error) {
             console.error(error);
