@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const userLogin_1 = require("../controller/userLogin");
+const PostManager_1 = require("../controller/PostManager");
+const abrigoManager_1 = require("../controller/abrigoManager");
+const routes = (0, express_1.Router)();
+routes.post('/login', new userLogin_1.userLogin().verfUser);
+routes.post('/verfToken', new userLogin_1.userLogin().verfToken);
+routes.post('/insertPost', new PostManager_1.PostManager().insertPost);
+routes.post('/updateUser', new userLogin_1.userLogin().updateUser);
+routes.get('/getPosts', new PostManager_1.PostManager().getPosts);
+routes.get('/getAbrigos', new abrigoManager_1.AbrigoManager().getAbrigos);
+exports.default = routes;
