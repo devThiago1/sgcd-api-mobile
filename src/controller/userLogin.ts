@@ -91,6 +91,9 @@ export class userLogin {
     
             const adressUser = await user_adress_Repository.findOneBy({ id: user.id_user });
             console.log(adressUser)
+
+            const hashPassword = await bcrypt.hash(updateUser.password_user, 10);
+            const hashCpf =  await bcrypt.hash(updateUser.cpf_user, 10);
     
             await user_adress_Repository
                 .createQueryBuilder()
@@ -112,9 +115,9 @@ export class userLogin {
                     first_name_user: updateUser.first_name_user,
                     last_name_user: updateUser.last_name_user,
                     number_user: updateUser.number_user,
-                    cpf_user: updateUser.cpf_user,
+                    cpf_user: hashCpf,
                     email_user: updateUser.email_user,
-                    password_user: updateUser.password_user,
+                    password_user: hashPassword,
                 })
                 .where("id_user = :id", { id: user.id_user })
                 .execute()
