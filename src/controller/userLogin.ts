@@ -71,7 +71,7 @@ export class userLogin {
             const user = await  user_info_Repository.findOneBy({ id_user: id });
 
             if (!user) {
-                return res.status(400).json({ error: 'Usuário não encontrado' });
+                return res.status(404).json({ error: 'Usuário não encontrado' });
             }
 
 
