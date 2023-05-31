@@ -66,51 +66,60 @@ export class userLogin {
     }
 
     async updateUser(req: Request, res: Response) {
-        const { id, firstName, lastName, numero_user, cpf, email, password, bairro, rua, complemento, cep, numero_adress } = req.body;
-
-        const firstNameUser = firstName;
-        const lastNameUser = lastName;
+    
+        const updateUser = {
+            id_user: req.body.id,
+            first_name_user: req.body.first_name_user,
+            last_name_user:  req.body.last_name_user,
+            cpf_user: req.body.cpf_user,
+            email_user: req.body.email_user,
+            password_user: req.body.password_user,
+            number_user: req.body.number_user,
+            bairro_user: req.body.bairro_user,
+            cep_user: req.body.cep_user,
+            complemento_user: req.body.complemento_user,
+            number_adress_user: req.body.number_adress_user,
+            rua_user: req.body.rua_user,
+            }
 
         try {
-            const user = await user_info_Repository.findOneBy({ id_user: id });
-
+            const user = await user_info_Repository.findOneBy({ id_user: updateUser.id_user });
+    
             if (!user) {
                 return res.status(400).json({ error: 'Usuário não encontrado' });
             }
-
+    
             const adressUser = await user_adress_Repository.findOneBy({ id: user.id_user });
             console.log(adressUser)
-
-
-
-            await user_info_Repository
-                .createQueryBuilder()
-                .update(User)
-                .set({
-                    first_name_user: firstName,
-                    last_name_user: lastName,
-                    number_user: numero_user,
-                    cpf_user: cpf,
-                    email_user: email,
-                    password_user: password,
-                })
-                .where("id_user = :id", { id: id })
-                .execute()
-
-
+    
             await user_adress_Repository
                 .createQueryBuilder()
                 .update(Adress)
                 .set({
-                    bairro_user: bairro,
-                    rua_user: rua,
-                    complemento_user: complemento,
-                    cep_user: cep,
-                    number_adress_user: numero_adress,
+                    bairro_user: updateUser.bairro_user,
+                    rua_user: updateUser.rua_user,
+                    complemento_user: updateUser.complemento_user,
+                    cep_user: updateUser.cep_user,
+                    number_adress_user: updateUser.number_adress_user,
                 })
-                .where("id = :user.id_user", { id_user: id })
+                .where("id = :id_user", { id_user: user.id_user })
                 .execute()
-
+    
+            await user_info_Repository
+                .createQueryBuilder()
+                .update(User)
+                .set({
+                    first_name_user: updateUser.first_name_user,
+                    last_name_user: updateUser.last_name_user,
+                    number_user: updateUser.number_user,
+                    cpf_user: updateUser.cpf_user,
+                    email_user: updateUser.email_user,
+                    password_user: updateUser.password_user,
+                })
+                .where("id_user = :id", { id: user.id_user })
+                .execute()
+    
+            return res.status(200).json({ message: 'Usuário atualizado com sucesso' });
         } catch (error) {
             console.error(error);
             return res.status(400).json({ error: 'Erro ao atualizar o usuário' });
