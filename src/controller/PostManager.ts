@@ -1,8 +1,6 @@
 import { Request, Response } from "express";
 import { Posts } from "../entities/Post";
 import { post_Repository } from "../repositories/post_Repository";
-import { user_info_Repository } from "../repositories/user_info_Repository";
-import { User } from "../entities/User";
 
 export class PostManager {
     async insertPost(req: Request, res: Response) {
