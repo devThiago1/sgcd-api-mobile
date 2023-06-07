@@ -13,7 +13,7 @@ export class userLogin {
         var { inputPhoneNumber, inputPassword } = req.body;
         console.log(inputPhoneNumber, inputPassword)
 
-        var verfData = await user_info_Repository.findOneBy({ number_user: inputPhoneNumber })
+        let verfData = await user_info_Repository.findOneBy({ number_user: inputPhoneNumber })
         console.log(verfData);
 
         if (!verfData) {
