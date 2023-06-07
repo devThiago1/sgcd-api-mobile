@@ -66,7 +66,7 @@ export class userLogin {
     }
 
     async updateUser(req: Request, res: Response) {
-        const { id, firstName, lastName, numero_user, cpf, email, password, bairro, rua, complemento, cep, numero_adress } = req.body;
+        const { id, firstName, lastName, numero_user,password, bairro, rua, complemento, cep, numero_adress } = req.body;
     
         
         try {
@@ -80,7 +80,6 @@ export class userLogin {
             console.log(adressUser)
 
             const hashPassword = await bcrypt.hash(password, 10);
-            const hashCpf =  await bcrypt.hash(cpf, 10);
     
             await user_adress_Repository
                 .createQueryBuilder()
@@ -102,8 +101,6 @@ export class userLogin {
                     first_name_user: firstName,
                     last_name_user: lastName,
                     number_user: numero_user,
-                    cpf_user: hashCpf,
-                    email_user: email,
                     password_user: hashPassword,
                 })
                 .where("id_user = :id", { id: id })
