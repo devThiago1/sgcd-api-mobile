@@ -27,8 +27,8 @@ export class userLogin {
             return res.status(400).json({ error: 'CPF ou senha inválidos 1' });
         }
 
-        const expiresInHours = 8;
-        const expiresInSeconds = expiresInHours * 3600
+        
+        const expiresInSeconds = 8 * 3600
         var token = jwt.sign({ id: verfData.id_user }, process.env.JWT_PASS ?? '', { expiresIn: expiresInSeconds })
 
         var adressUser = await user_adress_Repository.findOneBy({ id: verfData.id_user });
@@ -111,5 +111,27 @@ export class userLogin {
             console.error(error);
             return res.status(400).json({ error: 'Erro ao atualizar o usuário' });
         }
+    }
+    async getUser(req: Request, res: Response) {
+        const { phone } = req.body;
+
+        const verfData = await user_info_Repository.findOneBy({ number_user: phone })
+        
+        if (!verfData) {
+            return res.status(400).json({ error: 'INTERNAL ERRO' });
+        }
+
+        const adressUser = await user_adress_Repository.findOneBy({ id: verfData.id_user });
+
+        const expiresInSeconds = 8 * 3600;
+        const token = jwt.sign({ id: verfData.id_user }, process.env.JWT_PASS ?? '', { expiresIn: expiresInSeconds });
+
+        const { password_user: _, ...userLogin } = verfData;
+
+        res.json({
+            adressUser: adressUser,
+            verfData: userLogin,
+            token: token,
+        }).status(200)
     }
 }
