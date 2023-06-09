@@ -113,20 +113,20 @@ export class userLogin {
         }
     }
     async getUser(req: Request, res: Response) {
-        const { id } = req.body;
+        var { id } = req.body;
 
-        const verfData = await user_info_Repository.findOneBy({ id_user: id })
+        var verfData = await user_info_Repository.findOneBy({ id_user: id })
         
         if (!verfData) {
             return res.status(400).json({ error: 'INTERNAL ERRO' });
         }
 
-        const adressUser = await user_adress_Repository.findOneBy({ id: verfData.id_user });
+        var adressUser = await user_adress_Repository.findOneBy({ id: verfData.id_user });
 
         const expiresInSeconds = 8 * 3600;
-        const token = jwt.sign({ id: verfData.id_user }, process.env.JWT_PASS ?? '', { expiresIn: expiresInSeconds });
+        var token = jwt.sign({ id: verfData.id_user }, process.env.JWT_PASS ?? '', { expiresIn: expiresInSeconds });
 
-        const { password_user: _, ...userLogin } = verfData;
+        var { password_user: _, ...userLogin } = verfData;
 
         res.json({
             adressUser: adressUser,
