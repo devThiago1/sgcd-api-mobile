@@ -113,9 +113,9 @@ export class userLogin {
         }
     }
     async getUser(req: Request, res: Response) {
-        const { phone } = req.body;
+        const { id } = req.body;
 
-        const verfData = await user_info_Repository.findOneBy({ number_user: phone })
+        const verfData = await user_info_Repository.findOneBy({ id_user: id })
         
         if (!verfData) {
             return res.status(400).json({ error: 'INTERNAL ERRO' });
