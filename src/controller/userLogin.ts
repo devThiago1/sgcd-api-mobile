@@ -72,15 +72,22 @@ export class userLogin {
         try {
             const user = await user_info_Repository.findOneBy({ id_user: id });
     
-            if (!user) {
+         if (!user) {
                 return res.status(400).json({ error: 'Usuário não encontrado' });
-            }
+            } 
     
             const adressUser = await user_adress_Repository.findOneBy({ id: user.id_user });
             console.log(adressUser)
 
-            const hashPassword = await bcrypt.hash(password, 10);
-    
+           const isPasswordMatch = await bcrypt.compare(password, user.password_user);
+
+    if (!isPasswordMatch) {
+      return res.status(401).json({ error: 'A senha fornecida está incorreta' });
+    }
+                       
+    const hashPassword = await bcrypt.hash(password, 10);
+            
+     
             await user_adress_Repository
                 .createQueryBuilder()
                 .update(Adress)
