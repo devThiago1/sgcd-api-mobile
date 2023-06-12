@@ -82,7 +82,7 @@ export class userLogin {
            const isPasswordMatch = await bcrypt.compare(password, user.password_user);
 
     if (!isPasswordMatch) {
-      return res.status(401).json({ message: 'A senha fornecida está incorreta' });
+      return res.status(201).json({ message: 'A senha fornecida está incorreta' });
     }
                        
     const hashPassword = await bcrypt.hash(password, 10);
