@@ -140,5 +140,48 @@ export class userLogin {
             verfData: userLogin,
             token: token,
         }).status(200)
+               
     }
+ 
+    async updatePassword(req: Request, res: Response) {
+        const { id, password, passwordVerf } = req.body;
+    
+        
+        try {
+            const user = await user_info_Repository.findOneBy({ id_user: id });
+    
+         if (!user) {
+                return res.status(400).json({ error: 'Usuário não encontrado' });
+            } 
+    
+          
+
+           const isPasswordMatch = await bcrypt.compare(passwordVerf, user.password_user);
+
+    if (!isPasswordMatch) {
+      return res.status(401).json({ message: 'A senha fornecida está incorreta' });
+    }
+                       
+    const hashPassword = await bcrypt.hash(password, 10);
+            
+
+            await user_info_Repository
+                .createQueryBuilder()
+                .update(User)
+                .set({
+                    password_user: hashPassword,
+                })
+                .where("id_user = :id", { id: id })
+                .execute()
+    
+            return res.status(200).json({ message: 'Senha atualizada com sucesso' });
+        } catch (error) {
+            console.error(error);
+            return res.status(400).json({ error: 'Erro ao atualizar o usuário' });
+        }
+    }
+    
 }
+
+
+
