@@ -151,7 +151,7 @@ export class userLogin {
             const user = await user_info_Repository.findOneBy({ id_user: id });
     
          if (!user) {
-                return res.status(400).json({ error: 'Usuário não encontrado' });
+                return res.status(408).json({ error: 'Usuário não encontrado' });
             } 
     
           
@@ -177,7 +177,7 @@ export class userLogin {
             return res.status(200).json({ message: 'Senha atualizada com sucesso' });
         } catch (error) {
             console.error(error);
-            return res.status(404).json({ error: 'Erro ao atualizar o usuário' });
+            return res.status(406).json({ error: 'Erro ao atualizar o usuário' });
         }
     }
     
