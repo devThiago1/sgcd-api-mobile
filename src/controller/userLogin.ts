@@ -177,7 +177,7 @@ export class userLogin {
             return res.status(200).json({ message: 'Senha atualizada com sucesso' });
         } catch (error) {
             console.error(error);
-            return res.status(400).json({ error: 'Erro ao atualizar o usuário' });
+            return res.status(404).json({ error: 'Erro ao atualizar o usuário' });
         }
     }
     
