@@ -29,7 +29,8 @@ export class PostManager {
             .select(["posts.id",
             "posts.message",
             "user.first_name_user",
-            "user.last_name_user",])
+            "user.last_name_user",
+            "user.id_user"])
             .getMany()
                 if(posts !== null){
                    return res.json({
